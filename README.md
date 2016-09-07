@@ -50,14 +50,14 @@ Connected midi devices:
 
 Copy the name of the device you want to use as a controller (for example `IAC Driver Bus 1`)
 
-Open the file `./src/server/config/default.js` in a text editor and paste the name of your interface as the value of the `midiName` entry (line 16). Using the exemple value `IAC Driver Bus 1`, the config file should look like this:
+Open the file `./src/server/config/default.js` in a text editor and paste the name of your interface as the value of the `midiPortName` entry (line 16). Using the exemple value `IAC Driver Bus 1`, the config file should look like this:
 
 ```
   // ...
   appName: 'ORGy',
 
   // Name of the midi interface
-  midiName: 'IAC Driver Bus 1',
+  midiPortName: 'IAC Driver Bus 1',
 
   // ...
 ```
