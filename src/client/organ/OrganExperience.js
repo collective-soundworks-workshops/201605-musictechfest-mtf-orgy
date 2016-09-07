@@ -1,5 +1,5 @@
 import * as soundworks from 'soundworks/client';
-import PartialSynth from '../PartialSynth';
+import PartialSynth from '../shared/PartialSynth';
 
 const client = soundworks.client;
 const audioContext = soundworks.audioContext;

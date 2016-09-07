@@ -6,7 +6,7 @@ const numPartials = 8;
 
 // server-side 'player' experience.
 export default class PlayerExperience extends Experience {
-  constructor() {
+  constructor(midiPortName) {
     super('player');
 
     this.params = this.require('shared-params');
@@ -17,7 +17,7 @@ export default class PlayerExperience extends Experience {
     this.inactiveVoices = [];
     this.voicesOfNotes = new Map();
 
-    for(let i = 0; i < numVoices; i++) {
+    for (let i = 0; i < numVoices; i++) {
       const voice = {
         index: i,
         players: new Set(),
@@ -33,19 +33,19 @@ export default class PlayerExperience extends Experience {
     let portName = '';
     let portIndex = -1;
 
-    for(let i = 0; i < portCount; i++) {
+    for (let i = 0; i < portCount; i++) {
       const str = input.getPortName(i);
-      console.log('MIDI port', i.toString() + ':', str);
+      // console.log('MIDI port', i.toString() + ':', str);
 
-      if(str.indexOf('MiniNova') >= 0) {
+      if (str.indexOf(midiPortName) >= 0) {
         portName = str;
         portIndex = i;
         break;
       }
     }
 
-    if(portIndex >= 0) {
-      console.log('Opening MIDI port', portIndex.toString() + ':', portName);
+    if (portIndex >= 0) {
+      console.log(`> Opening MIDI port ${portIndex}: "${portName}"`);
       input.openPort(portIndex);
 
       input.on('message', (deltaTime, message) => {
@@ -68,6 +68,8 @@ export default class PlayerExperience extends Experience {
             break;
         }
       });
+    } else {
+      console.log(`> MIDI port name "${midiPortName}" not found`);
     }
   }
 

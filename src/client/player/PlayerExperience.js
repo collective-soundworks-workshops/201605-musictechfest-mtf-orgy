@@ -1,6 +1,6 @@
 import * as soundworks from 'soundworks/client';
 import PlayerRenderer from './PlayerRenderer';
-import PartialSynth from '../PartialSynth';
+import PartialSynth from '../shared/PartialSynth';
 
 const client = soundworks.client;
 const audioContext = soundworks.audioContext;
@@ -19,7 +19,7 @@ const viewTemplate = `
 // this experience plays a sound when it starts, and plays another sound when
 // other clients join the experience
 export default class PlayerExperience extends soundworks.Experience {
-  constructor(audioFiles) {
+  constructor() {
     super();
 
     this.platform = this.require('platform', { features: ['web-audio'] });

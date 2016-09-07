@@ -1,13 +1,16 @@
 import * as soundworks from 'soundworks/client';
-const client = soundworks.client;
+import viewTemplates from '../shared/viewTemplates';
+import viewContent from '../shared/viewContent';
 
 window.addEventListener('load', () => {
-  const { appName, clientType, socketIO }  = window.soundworksConfig;
+  const config = window.soundworksConfig;
 
-  soundworks.client.init(clientType, { socketIO, appName });
+  soundworks.client.init(config.clientType, config);
+  soundworks.client.setViewContentDefinitions(viewContent);
+  soundworks.client.setViewTemplateDefinitions(viewTemplates);
 
-  const conductor = new soundworks.Conductor();
+  const conductor = new soundworks.BasicSharedController();
   conductor.setGuiOptions('numPlayers', { readOnly: true });
 
-  client.start();
+  soundworks.client.start();
 });

@@ -2,7 +2,20 @@ import 'source-map-support/register'; // enable sourcemaps in node
 import * as soundworks from 'soundworks/server';
 import PlayerExperience from './PlayerExperience';
 
-soundworks.server.init({ appName: 'MTF Orgy' });
+import defaultConfig from './config/default';
+
+let config = null;
+
+switch(process.env.ENV) {
+  default:
+    config = defaultConfig;
+    break;
+}
+
+// configure express environment ('production' enables cache systems)
+process.env.NODE_ENV = config.env;
+
+soundworks.server.init(config);
 
 soundworks.server.setClientConfigDefinition((clientType, config, httpRequest) => {
   return {
@@ -35,7 +48,7 @@ class OrganExperience extends soundworks.Experience {
 }
 
 const conductor = new Conductor();
-const playerExperience = new PlayerExperience();
+const playerExperience = new PlayerExperience(config.midiPortName);
 const organExperience = new OrganExperience();
 
 // start application

@@ -1,74 +1,91 @@
-# Soundworks Application Template
+# ORGy
 
-> This is a project template for developing [*Soundworks*](https://github.com/collective-soundworks/soundworks/) applications.  
-> The template also includes comprehensive comments in the source files.
+*This experience was designed during the MusicTechFest - CoSiMa workshop - Berlin, May 2016.*
 
-[//]: # (For a complete documentation of the *Soundworks* framework, please refer to http://collective-soundworks.github.io/soundworks/.)
+> @todo app description
 
-## Creating a New Application
+## Credits
 
-To start the development of a new *Soundworks* application, we recommend the following sequence of commands:
+> @todo add names (designed by, developped by)
 
-```sh
-$ git clone https://github.com/collective-soundworks/soundworks-template.git my-soundworks-application
-$ cd my-soundworks-application
-$ rm -Rf .git
+The application is developped using the [`soundworks`](https://github.com/collective-soundworks/soundworks) framework and [`soundworks-template`](https://github.com/collective-soundworks/soundworks-template) application.
+
+## Requirements
+
+[NodeJS](https://nodejs.org/en/) (version >= 0.12)
+> Version LTS is recommanded (Long Term Stable), currently v4.5.0 for most users.
+
+The application also requires the use of a midi keyboard connected to the computer running the node server.
+
+## Installation / Configuration
+
+- Download the application from the [github](https://github.com/collective-soundworks-workshops/201605-musictechfest-mtf-orgy) repository
+
+- Open a terminal and move to the application directory
+
+```
+$ cd path/to/201605-musictechfest-mtf-orgy
+```
+
+- Install dependencies
+
+```
 $ npm install
-$ npm run watch
 ```
 
-If you succeeded to execute all commands without errors, you can start connecting clients - on a mobile phone or a browser simulating a mobile user agent and touch events - to the server.
+- Run the provided utilitary script to get the list of the connected MIDI devices
 
-## Helper Scripts
+```
+$ node ./utils/midi-list.js
+```
 
-The template includes a set of scripts to support the development of an application.
-The scripts can be invoked through the `npm run` command:
- * `transpile` - creates an executable application from the ES2015 (ES6) sources
- * `start` - starts the application (i.e. its server).
- * `watch` - starts the server and watches the file system to do the necessary operations while developing
+The script should output something like (results may change according to your configuration)
 
-```shell
+```
+Connected midi devices:
+- MIDI port 0: "IAC Driver Bus 1"
+```
+
+Copy the name of the device you want to use as a controller (for example `IAC Driver Bus 1`)
+
+Open the file `./src/server/config/default.js` in a text editor and paste the name of your interface as the value of the `midiName` entry (line 16). Using the exemple value `IAC Driver Bus 1`, the config file should look like this:
+
+```
+  // ...
+  appName: 'ORGy',
+
+  // Name of the midi interface
+  midiName: 'IAC Driver Bus 1',
+
+  // ...
+```
+
+For production use, you can also set the `env` entry to `'production'` and `port` entry to `80`.
+
+Then to launch the application, run:
+
+```
 $ npm run transpile
-$ npm run start
-$ npm run watch
+$ npm run minify
+$ node ./server/index.js
 ```
 
-In detail, the `transpile` script implies the following operations:
- * *transpile* javascript source files from ES2015 to ES5
- * rebundle (i.e. *browserify*) the client Javascript (ES5) sources
- * recreate the *CSS* files from their *SASS* sources
+If the MIDI interface is found you should be able to see the following line in the console: 
+```
+$ > Opening MIDI port 0: "IAC Driver Bus 1"
+```
+ortherwise
+```
+$ > MIDI port name "IAC Driver Bus 1" not found
+```
 
-The following operations may be performed by the `watch` script depending on the modification of source files:
- * recreate a *CSS* file when a corresponding *SASS* file in the `sass` directory is modified
- * re-*transpile* a modified server source file in the `src/server` directory
- * re-*transpile* and *browserify* a modified client source file in the `src/client` directory
- * re-*transpile* a modified source file used on both, client and server, in the `src/common` directory
+On the computer running the server, the client should be accessible at the following urls:
+- [player] `http://127.0.0.1/`
+- [organ]  `http://127.0.0.1/organ`
+- [conductor] `http://127.0.0.1/conductor`
 
-## Files and Directories
+To access the application from a smartphone or a different computer just replace `127.0.0.1` by your public ip on the wifi network.
 
-The template consists of the following files and directories you should know about:
- * `bin` - the Node.js scripts *(no need to touch these)*
- * `public` - everything the clients need to run the application
-   * `fonts` - fonts used by the application template *(this is your directory)*
-   * `sounds` - sounds used by the application template *(this is your directory)*
-   * `js` - transpiled javascript files *(do not touch)*
-   * `css` - *CSS* stylesheets automatically created from *SASS* sources *(do not touch)*
-   * . . . add here the assets (images, movies, etc.) used by the clients of your application
- * `sass` - *SASS* stylesheet sources
-   * `main.scss` - includes all other *SASS* files in the directory *(the provided files are described in comments)*
-   * . . . add your styles here (as *SASS* files) and include them into the `main.scss` file
- * `src` - javascript (ES2015) sources *(this is all yours)*
-   * `client` - sources of the application's client side *(contains one directory per client type)*
-     * `player` - sources of the *player* client
-       * `index.js` - main file of the *player* client
-       * . . . files imported by the `index.js` main file
-   * `server` - sources of the application's server side
-     * `index.js` - server side main file *(for all client types)*
-     * . . . files imported by the `index.js` server side main file
- * `html` - template files to generate the application's `index.html` files *(no need to touch)*
- * `package.json` - NPM package file *(modify so that the description and dependencies match your application)*
- * `README.md` - this file *(that you should replace by a file that informs about your application)*
 
-This structure is required by the *Soundworks* framework and the helper scripts.
-The files that are part of the application's implementation (i.e. especially the files in the `src` directories) contain comprehensive explanatory comments.
-# 201605-musictechfest-mtf-orgy
+
+
