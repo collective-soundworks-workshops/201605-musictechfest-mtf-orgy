@@ -1,12 +1,14 @@
 # ORGy
 
-*This experience was designed during the MusicTechFest - CoSiMa workshop - Berlin, May 2016.*
-
+A collaborative additive synthesizer rendered through smartphones using a web-browser
 > @todo app description
+
+*This experience was designed during the Soundworks workshop "Hack the Audience" at the MusicTechFest Berlin in may 2016.*
 
 ## Credits
 
-> @todo add names (designed by, developped by)
+> @todo designed by
+> @todo developped by
 
 The application is developped using the [`soundworks`](https://github.com/collective-soundworks/soundworks) framework and [`soundworks-template`](https://github.com/collective-soundworks/soundworks-template) application.
 
