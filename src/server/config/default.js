@@ -13,7 +13,7 @@ export default {
   appName: 'ORGy',
 
   // Name of the midi interface
-  midiPortName: 'IAC',
+  midiPortName: '',
 
   // name of the environnement ('production' enable cache in express application)
   env: 'development',
