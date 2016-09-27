@@ -139,7 +139,7 @@ function isAllowed(filename, ensureFile) {
 function _getFileList(folder, excludeDirectories, callback) {
   var files = [];
 
-  excludeDirectories = excludeDirectories.map((v) => new RegExp('^' + v));
+  excludeDirectories = excludeDirectories.map(function(v) { return new RegExp('^' + v); });
 
   function isExcluded(path) {
     for (var i = 0; i < excludeDirectories.length; i++) {
