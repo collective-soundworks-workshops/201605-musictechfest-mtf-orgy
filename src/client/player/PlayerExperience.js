@@ -16,6 +16,12 @@ const viewTemplate = `
   </div>
 `;
 
+const bgColors = [
+  'magenta',
+  'cyan',
+  'yellow',
+];
+
 // this experience plays a sound when it starts, and plays another sound when
 // other clients join the experience
 export default class PlayerExperience extends soundworks.Experience {
@@ -56,19 +62,20 @@ export default class PlayerExperience extends soundworks.Experience {
     // initialize rendering
     this.renderer = new PlayerRenderer();
     this.view.addRenderer(this.renderer);
-    this.view.setPreRender((ctx) => {
-      ctx.fillStyle = '#000';
-      ctx.fillRect(0, 0, ctx.width, ctx.height);
-    });
 
     this.params.addParamListener('panic', () => this.panic());
     this.params.addParamListener('reload', () => this.reload());
 
-    this.receive('enable', (partialIndex, note) => {
+    this.receive('enable', (voiceIndex, partialIndex, note) => {
       const synth = new PartialSynth(partialIndex);
       synth.note = note;
       this.synth = synth;
       this.note = note;
+
+      this.view.setPreRender((ctx) => {
+        ctx.fillStyle = bgColors[voiceIndex];
+        ctx.fillRect(0, 0, ctx.width, ctx.height);
+      });
     });
 
     this.receive('note', (note) => {

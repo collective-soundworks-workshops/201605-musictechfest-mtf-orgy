@@ -135,7 +135,7 @@ export default class PlayerExperience extends Experience {
     voice.players.add(client);
 
     this.broadcast('organ', null, 'enable', clientIndex, partialIndex, voice.note);
-    this.send(client, 'enable', partialIndex + numPartials, voice.note);
+    this.send(client, 'enable', voiceIndex, partialIndex + numPartials, voice.note);
 
     this.receive(client, 'control', (intensity, detune) => {
       this.broadcast('organ', null, 'control', clientIndex, intensity, detune);
