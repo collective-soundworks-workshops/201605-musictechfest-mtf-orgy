@@ -8,9 +8,12 @@ const audioContext = soundworks.audioContext;
 const viewTemplate = `
   <canvas class="background"></canvas>
   <div class="foreground">
-    <div class="section-top flex-middle"></div>
-    <div class="section-center flex-center">
+    <div class="section-top flex-middle">
       <p class="big"><%= title %></p>
+    </div>
+    <div class="section-center flex-center">
+      <p class="huge">
+        <%= note %><span class="dot">.</span><%= partialIndex %>
     </div>
     <div class="section-bottom flex-middle"></div>
   </div>
@@ -40,7 +43,11 @@ export default class PlayerExperience extends soundworks.Experience {
   init() {
     // initialize the view
     this.viewTemplate = viewTemplate;
-    this.viewContent = { title: `Tilt it!` };
+    this.viewContent = {
+      title: `Tilt it!`,
+      note: '',
+      partialIndex: '',
+    };
     this.viewCtor = soundworks.CanvasView;
     this.view = this.createView();
   }
@@ -69,6 +76,11 @@ export default class PlayerExperience extends soundworks.Experience {
       synth.note = note;
       this.synth = synth;
       this.note = note;
+
+      // update view
+      this.view.content.note = note;
+      this.view.content.partialIndex = partialIndex;
+      this.view.render('.section-center');
     });
 
     this.receive('note', (note) => {

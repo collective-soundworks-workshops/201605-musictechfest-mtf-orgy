@@ -43,7 +43,7 @@ export default class PlayerRenderer extends Renderer {
     ctx.save();
     ctx.globalAlpha = this.intensity;
     ctx.fillStyle = '#ee1111';
-    ctx.fillRect(0, 0, ctx.width, ctx.height);
+    ctx.fillRect(0, 0, this.width, this.height);
     ctx.restore();
   }
 }
