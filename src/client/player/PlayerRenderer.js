@@ -2,7 +2,7 @@ import { Renderer } from 'soundworks/client';
 
 function decibelTolinear(val) {
   return Math.exp(0.11512925464970229 * val); // pow(10, val / 20)
-};
+}
 
 /**
  * A simple canvas renderer.
@@ -14,6 +14,7 @@ export default class PlayerRenderer extends Renderer {
 
     this.width = 0;
     this.height = 0;
+    this.color = '#000';
 
     this.intensity = 0;
   }
@@ -23,8 +24,6 @@ export default class PlayerRenderer extends Renderer {
    * @param {Number} dt - time since last update in seconds.
    */
   init() {
-    this.width = this.canvasWidth;
-    this.height = this.canvasHeight;
   }
 
   /**
@@ -42,8 +41,8 @@ export default class PlayerRenderer extends Renderer {
   render(ctx) {
     ctx.save();
     ctx.globalAlpha = this.intensity;
-    ctx.fillStyle = '#ee1111';
-    ctx.fillRect(0, 0, ctx.width, ctx.height);
+    ctx.fillStyle = this.color;
+    ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
     ctx.restore();
   }
 }

@@ -8,18 +8,22 @@ const audioContext = soundworks.audioContext;
 const viewTemplate = `
   <canvas class="background"></canvas>
   <div class="foreground">
-    <div class="section-top flex-middle"></div>
-    <div class="section-center flex-center">
+    <div class="section-top flex-middle">
       <p class="big"><%= title %></p>
+    </div>
+    <div class="section-center flex-center">
+      <p class="huge">
+        <%= voiceIndex %><span class="dot">.</span><%= partialIndex %>
+      </p>
     </div>
     <div class="section-bottom flex-middle"></div>
   </div>
 `;
 
 const bgColors = [
-  'magenta',
   'cyan',
   'yellow',
+  'magenta',
 ];
 
 // this experience plays a sound when it starts, and plays another sound when
@@ -46,7 +50,11 @@ export default class PlayerExperience extends soundworks.Experience {
   init() {
     // initialize the view
     this.viewTemplate = viewTemplate;
-    this.viewContent = { title: `Tilt it!` };
+    this.viewContent = {
+      title: `Tilt it!`,
+      voiceIndex: '',
+      partialIndex: '',
+    };
     this.viewCtor = soundworks.CanvasView;
     this.view = this.createView();
   }
@@ -62,20 +70,26 @@ export default class PlayerExperience extends soundworks.Experience {
     // initialize rendering
     this.renderer = new PlayerRenderer();
     this.view.addRenderer(this.renderer);
+    this.view.setPreRender((ctx) => {
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    });
 
     this.params.addParamListener('panic', () => this.panic());
     this.params.addParamListener('reload', () => this.reload());
 
-    this.receive('enable', (voiceIndex, partialIndex, note) => {
-      const synth = new PartialSynth(partialIndex);
+    this.receive('enable', (voiceIndex, lowerPartialIndex, higherPartialIndex, note) => {
+      const synth = new PartialSynth(higherPartialIndex);
       synth.note = note;
       this.synth = synth;
       this.note = note;
 
-      this.view.setPreRender((ctx) => {
-        ctx.fillStyle = bgColors[voiceIndex];
-        ctx.fillRect(0, 0, ctx.width, ctx.height);
-      });
+      this.renderer.color = bgColors[voiceIndex];
+
+      // update view
+      this.view.content.voiceIndex = voiceIndex + 1;
+      this.view.content.partialIndex = lowerPartialIndex + 1;
+      this.view.render('.section-center');
     });
 
     this.receive('note', (note) => {

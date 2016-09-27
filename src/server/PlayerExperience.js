@@ -2,7 +2,7 @@ import { Experience } from 'soundworks/server';
 import * as midi from 'midi';
 
 const numVoices = 3;
-const numPartials = 8;
+const numPartials = 7;
 
 // server-side 'player' experience.
 export default class PlayerExperience extends Experience {
@@ -104,7 +104,7 @@ export default class PlayerExperience extends Experience {
     this.setNoteOfVoice(voice, note);
     this.activeVoices.push(voice);
 
-    //console.log('ON:', this.activeVoices.map((v) => v.index), this.inactiveVoices.map((v) => v.index));
+    // console.log('note on:', voice, note, this.activeVoices.map((v) => v.index), this.inactiveVoices.map((v) => v.index));
   }
 
   noteOff(note) {
@@ -120,7 +120,7 @@ export default class PlayerExperience extends Experience {
       this.inactiveVoices.push(voice);
     }
 
-    //console.log('OFF:', this.activeVoices.map((v) => v.index), this.inactiveVoices.map((v) => v.index));
+    // console.log('note off:', voice, note, this.activeVoices.map((v) => v.index), this.inactiveVoices.map((v) => v.index));
   }
 
   enter(client) {
@@ -131,11 +131,15 @@ export default class PlayerExperience extends Experience {
     const partialIndex = Math.floor(clientIndex % (numVoices * numPartials) / numVoices);
     const layerIndex = Math.floor(clientIndex / (numVoices * numPartials));
 
+    // console.log('enter:', voiceIndex, partialIndex, layerIndex);
+
     const voice = this.voices[voiceIndex];
     voice.players.add(client);
 
+    // console.log('voice:', voice, voice.players.size);
+
     this.broadcast('organ', null, 'enable', clientIndex, partialIndex, voice.note);
-    this.send(client, 'enable', voiceIndex, partialIndex + numPartials, voice.note);
+    this.send(client, 'enable', voiceIndex, partialIndex, partialIndex + numPartials, voice.note);
 
     this.receive(client, 'control', (intensity, detune) => {
       this.broadcast('organ', null, 'control', clientIndex, intensity, detune);

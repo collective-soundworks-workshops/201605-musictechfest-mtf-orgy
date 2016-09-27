@@ -13,7 +13,7 @@ export default {
   appName: 'ORGy',
 
   // Name of the midi interface
-  midiPortName: '',
+  midiPortName: 'IAC Bus 1',
 
   // name of the environnement ('production' enable cache in express application)
   env: 'development',
@@ -118,4 +118,4 @@ export default {
 
   // directory where error reported from the clients are written
   errorReporterDirectory: path.join(cwd, 'logs', 'clients'),
-}
+};
